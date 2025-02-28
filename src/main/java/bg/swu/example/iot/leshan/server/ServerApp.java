@@ -11,6 +11,8 @@ import java.util.stream.Stream;
 import org.eclipse.leshan.core.model.InvalidDDFFileException;
 import org.eclipse.leshan.core.model.ObjectLoader;
 import org.eclipse.leshan.core.model.ObjectModel;
+import org.eclipse.leshan.server.LeshanServer;
+import org.eclipse.leshan.server.LeshanServerBuilder;
 import org.eclipse.leshan.server.endpoint.LwM2mServerEndpointsProvider;
 import org.eclipse.leshan.server.model.LwM2mModelProvider;
 import org.eclipse.leshan.server.model.VersionedModelProvider;
@@ -44,6 +46,24 @@ public class ServerApp {
 		final List<LwM2mServerEndpointsProvider> endpointsProviders = new ArrayList<>();
 		final InetSocketAddress address = new InetSocketAddress(host, port);
 		endpointsProviders.add(new JavaCoapServerEndpointsProvider(address));
+
+		final LeshanServerBuilder builder = new LeshanServerBuilder();
+		builder.setObjectModelProvider(modelProvider);
+
+		builder.setEndpointsProviders(endpointsProviders);
+
+		final LeshanServer server = builder.build();
+
+		server.start();
+		System.out.println("LwM2M Server started...");
+
+		final Runnable destroyOp = () -> {
+			System.out.println("Stopping LwM2M Server...");
+			server.destroy();
+		};
+
+		// Keep running
+		Runtime.getRuntime().addShutdownHook(new Thread(destroyOp));
 	}
 }
 
