@@ -66,6 +66,9 @@ public class ServerApp {
 
 		// Keep running
 		Runtime.getRuntime().addShutdownHook(new Thread(destroyOp));
+
+		final PollingTask pollingTask = new PollingTask(server);
+		pollingTask.startPolling();
 	}
 }
 
