@@ -16,6 +16,7 @@ import org.eclipse.leshan.server.LeshanServerBuilder;
 import org.eclipse.leshan.server.endpoint.LwM2mServerEndpointsProvider;
 import org.eclipse.leshan.server.model.LwM2mModelProvider;
 import org.eclipse.leshan.server.model.VersionedModelProvider;
+import org.eclipse.leshan.transport.javacoap.server.coaptcp.endpoint.JavaCoapTcpServerEndpointsProvider;
 import org.eclipse.leshan.transport.javacoap.server.endpoint.JavaCoapServerEndpointsProvider;
 
 public class ServerApp {
@@ -46,6 +47,7 @@ public class ServerApp {
 		final List<LwM2mServerEndpointsProvider> endpointsProviders = new ArrayList<>();
 		final InetSocketAddress address = new InetSocketAddress(host, port);
 		endpointsProviders.add(new JavaCoapServerEndpointsProvider(address));
+		endpointsProviders.add(new JavaCoapTcpServerEndpointsProvider(address));
 
 		final LeshanServerBuilder builder = new LeshanServerBuilder();
 		builder.setObjectModelProvider(modelProvider);
