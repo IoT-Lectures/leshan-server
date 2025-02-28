@@ -2,6 +2,8 @@ package bg.swu.example.iot.leshan.server;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -9,10 +11,16 @@ import java.util.stream.Stream;
 import org.eclipse.leshan.core.model.InvalidDDFFileException;
 import org.eclipse.leshan.core.model.ObjectLoader;
 import org.eclipse.leshan.core.model.ObjectModel;
+import org.eclipse.leshan.server.endpoint.LwM2mServerEndpointsProvider;
+import org.eclipse.leshan.server.model.LwM2mModelProvider;
+import org.eclipse.leshan.server.model.VersionedModelProvider;
+import org.eclipse.leshan.transport.javacoap.server.endpoint.JavaCoapServerEndpointsProvider;
 
 public class ServerApp {
-
 	public static void main(String[] args) {
+		final String host = "localhost";
+		final int port = 5683;
+
 		// We obtain the xml files from https://github.com/OpenMobileAlliance/lwm2m-registry
 		final List<ObjectModel> models = Stream.concat(
 			ObjectLoader.loadDefault().stream(),
@@ -30,6 +38,12 @@ public class ServerApp {
 				}
 			)
 		).collect(Collectors.toList());
+
+		final LwM2mModelProvider modelProvider = new VersionedModelProvider(models);
+
+		final List<LwM2mServerEndpointsProvider> endpointsProviders = new ArrayList<>();
+		final InetSocketAddress address = new InetSocketAddress(host, port);
+		endpointsProviders.add(new JavaCoapServerEndpointsProvider(address));
 	}
 }
 
