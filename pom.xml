@@ -1,0 +1,28 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>bg.swu.example.iot</groupId>
+	<artifactId>leshan-server</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.leshan</groupId>
+			<artifactId>leshan-tl-jc-server-coap</artifactId>
+			<version>2.0.0-M17</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.14.0</version>
+				<configuration>
+					<release>8</release>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+
